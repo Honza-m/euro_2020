@@ -3,42 +3,55 @@ import React from 'react';
 
 function FutureMatch(props){
   const m = props.match;
-  const homeTeam = props.teams.find((t) => t.id === m.home_team);
-  const awayTeam = props.teams.find((t) => t.id === m.away_team);
+  let homeTeam = props.teams.find((t) => t.id === m.home_team);
+  let awayTeam = props.teams.find((t) => t.id === m.away_team);
 
   // Get stadium info
   const stadium = props.stadiums.find((s) => (s.id === m.stadium))
 
   // Get team info
   let homeTeamStr, awayTeamStr;
-  if (homeTeam !== undefined && awayTeam !== undefined) {
-    homeTeamStr = `${homeTeam.flag.unicode} ${homeTeam.name}`
-    awayTeamStr = `${awayTeam.name} ${awayTeam.flag.unicode}`
-  } else {
-    homeTeamStr = 'To be decided'
-    awayTeamStr = 'To be decided'
+  if (homeTeam === undefined) {
+   homeTeam = {name: 'To be decided', flag: {unicode: ''}}
   }
+  if (awayTeam === undefined) {
+    awayTeam = {name: 'To be decided', flag: {unicode: ''}}
+  }
+   
   
   return (
     <div>
-      <div>{homeTeamStr} vs {awayTeamStr}</div>
-      <div>{new Date(m.date).toLocaleString()}</div>
-      <div>{stadium.name}, {stadium.city}</div>
+       <div className="names">
+        <div className="home flag">{homeTeam.flag.unicode}</div>
+        <div className="home name">{homeTeam.name}</div>
+        <div className="vs"> vs </div>
+        <div className="away flag left">{awayTeam.flag.unicode}</div>
+        <div className="away name">{awayTeam.name}</div>
+        <div className="away flag right">{awayTeam.flag.unicode}</div>
+      </div>
+      <div className="desc">
+        <div>{new Date(m.date).toLocaleString()}</div>
+        <div>{stadium.name}, {stadium.city}</div>
+      </div>
     </div>
   )
 }
 
 function PastMatch(props){
   const m = props.match;
-  console.log(m);
   const homeTeam = props.teams.find((t) => t.id === m.home_team);
   const awayTeam = props.teams.find((t) => t.id === m.away_team);
-  const homeTeamStr = `${homeTeam.flag.unicode} ${homeTeam.name}`
-  const awayTeamStr = `${awayTeam.name} ${awayTeam.flag.unicode}`
   return (
     <div>
-      <div>{homeTeamStr} vs {awayTeamStr}</div>
-      <div>{m.home_result} : {m.away_result}</div>
+      <div className="names">
+        <div className="home flag">{homeTeam.flag.unicode}</div>
+        <div className="home name">{homeTeam.name}</div>
+        <div className="vs"> vs </div>
+        <div className="away flag left">{awayTeam.flag.unicode}</div>
+        <div className="away name">{awayTeam.name}</div>
+        <div className="away flag right">{awayTeam.flag.unicode}</div>
+      </div>
+      <div className="score">{m.home_result} : {m.away_result}</div>
     </div>
   )
 }
@@ -63,7 +76,6 @@ class App extends React.Component {
     fetch('https://raw.githubusercontent.com/lsv/uefa-euro-2020/master/data.json')
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       let matches = []
       // Get matches from all groups
       for (let i=0; i<data.groups.length; i++) {
