@@ -1,0 +1,40 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background-color: #274472;
+}
+
+.App {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  padding: 20px;
+  width: 600px;
+  background-color: #fff;
+  border-radius: 20px;
+  font-size: 2em;
+  color: #000;
+  text-align: center;
+  position: relative;
+}
+
+.match {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation div:first-child {
+  text-align: left;
+  float: left;
+}
+
+.navigation div:last-child {
+  text-align: right;
+  float: right;
+}
