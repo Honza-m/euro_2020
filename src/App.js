@@ -191,12 +191,8 @@ class App extends React.Component {
             {matchInfo}
           </div>
           <div className="navigation">
-            <div>
-              <button onClick={this.prevMatch}>Prev match</button>
-            </div>
-            <div>
-              <button onClick={this.nextMatch}>Next match</button>
-            </div>
+            <div>{this.state.i !== 0 ? <button onClick={this.prevMatch}>Prev match</button> : '' }</div>
+            <div>{this.state.i === this.state.filteredMatches.length - 1 ? '' : <button onClick={this.nextMatch}>Next match</button>}</div>
           </div>
         </div>
       </div>
