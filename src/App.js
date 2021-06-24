@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 function FutureMatch(props){
   const m = props.match;
@@ -10,7 +11,6 @@ function FutureMatch(props){
   const stadium = props.stadiums.find((s) => (s.id === m.stadium))
 
   // Get team info
-  let homeTeamStr, awayTeamStr;
   if (homeTeam === undefined) {
    homeTeam = {name: 'To be decided', flag: {unicode: ''}}
   }
@@ -120,22 +120,16 @@ class App extends React.Component {
   }
 
   nextMatch() {
+    this.setState({changedMatch: false})
     this.setState((state) => {
-      if (state.i + 1 >= state.filteredMatches.length){
-        return {i: state.filteredMatches.length - 1}
-      } else {
-        return {i: state.i + 1}
-      }
+      return {i: state.i + 1, changedMatch: true}
     })
   }
 
   prevMatch() {
+    this.setState({changedMatch: false})
     this.setState((state) => {
-      if (state.i - 1 <= 0){
-        return {i: 0}
-      } else {
-        return {i: state.i - 1}
-      }
+      return {i: state.i - 1, changedMatch: true}
     })
   }
 
@@ -159,8 +153,11 @@ class App extends React.Component {
 
   render() {
     if (this.state.matches === null){
-      console.log('loading');
-      return <div className="loading">Loading</div>
+      return (
+        <div className="loading-wrapper">
+          <div className="loading"><div></div><div></div><div></div></div>
+        </div>
+      )
     }
 
     const match = this.state.filteredMatches[this.state.i];
@@ -180,21 +177,29 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <div className="box">
-          <div>
-            <select onChange={this.filterByTeam}>
-              <option value="">All matches</option>
-              {this.state.teams.sort((a, b) => a.name.localeCompare(b.name)).map((team, i) => <option value={team.id} key={i}>{team.name}</option>)}
-            </select>
+        <CSSTransition in={true} appear={true} classNames='fade'>
+          <div className='box'>
+            <div>
+              <select onChange={this.filterByTeam}>
+                <option value="">All matches</option>
+                {this.state.teams.sort((a, b) => a.name.localeCompare(b.name)).map((team, i) => <option value={team.id} key={i}>{team.name}</option>)}
+              </select>
+            </div>
+            <TransitionGroup className="match">
+              <CSSTransition 
+                key={this.state.filteredMatches[this.state.i].id}
+                timeout={600}
+                classNames='fade'
+              >
+                {matchInfo}
+              </CSSTransition>
+            </TransitionGroup>
+            <div className="navigation">
+              <div>{this.state.i !== 0 ? <button onClick={this.prevMatch}>Prev match</button> : '' }</div>
+              <div>{this.state.i === this.state.filteredMatches.length - 1 ? '' : <button onClick={this.nextMatch}>Next match</button>}</div>
+            </div>
           </div>
-          <div className="match">
-            {matchInfo}
-          </div>
-          <div className="navigation">
-            <div>{this.state.i !== 0 ? <button onClick={this.prevMatch}>Prev match</button> : '' }</div>
-            <div>{this.state.i === this.state.filteredMatches.length - 1 ? '' : <button onClick={this.nextMatch}>Next match</button>}</div>
-          </div>
-        </div>
+        </CSSTransition>
       </div>
     )
   }
