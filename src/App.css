@@ -73,7 +73,7 @@ html, body, #root {
 
 .fade-enter-active {
   opacity: 1;
-  transition: opacity 300ms linear 300ms;
+  transition: opacity 150ms linear 150ms;
 }
 
 .fade-exit {
@@ -82,7 +82,7 @@ html, body, #root {
 
 .fade-exit-active {
   opacity: 0;
-  transition: opacity 300ms linear;
+  transition: opacity 150ms linear;
 }
 
 /* Styling */

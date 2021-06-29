@@ -188,7 +188,7 @@ class App extends React.Component {
             <TransitionGroup className="match">
               <CSSTransition 
                 key={this.state.filteredMatches[this.state.i].id}
-                timeout={600}
+                timeout={300}
                 classNames='fade'
               >
                 {matchInfo}
